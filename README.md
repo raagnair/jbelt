@@ -2,7 +2,28 @@
 Things I wish were in Java's standard library.    
 
 # **Pipes**
-Emulates the pipe notation from Functional languages. 
+Emulates the pipe notation from functional languages. This is useful when you want multiple operations performed sequentially on an initial input, and have no use for each intermediate step to be available as a variable in scope. This also can serve to make the code more readable.
+
+Before:
+```java
+var result = operation3(operation2(operation1(input)))
+System.out.println(operationD(operationC(operationB(operationA(input)))));
+```
+
+After:
+```java
+var result = Pipe.of(input)
+    .pipe(operation1)
+    .pipe(operation2)
+    .pipe(operation3)
+    .get()
+Pipe.of(input)
+    .pipe(operationA)
+    .pipe(operationB)
+    .pipe(operationC)
+    .pipe(operationD)
+    .to(System.out::println);
+```
 
 
 # **Lambdas**
@@ -10,7 +31,7 @@ Emulates the pipe notation from Functional languages.
 
 Before:
 ```java
-List.of("String.class", "Integer.class", "MyFunction.class").stream()
+List.of("String.class", "Integer.class", "MyBusiness.class").stream()
     .map(s -> {
         try {
             return Class.forName(s);
@@ -28,7 +49,7 @@ List.of("String.class", "Integer.class", "MyFunction.class").stream()
     .toList();
 ```
 
-- **recover** -- Takes a Function/Consumer that throws a RuntimeException and suppresses it. In the case of a Consumer, it does nothing. In the case of a Function, it outputs the provided default value. This is valuable in cases where you want to process input, and ignore the errors.
+**recover** -- Takes a Function/Consumer that throws a RuntimeException and suppresses it. In the case of a Consumer, it does nothing. In the case of a Function, it outputs the provided default value. This is convenient in cases where you want to process input, and ignore the errors.
 
 Before:
 ```java
@@ -50,4 +71,21 @@ List.of("504", "200", "403", "oops", "123").stream()
 ```
 
 **Collections**
-- **fold** -- given a collection of `I`, a base object of `O`, and a function `(O, I) -> O`, runs a fold operation to output the `O` reduction.
+**fold** -- Given a collection of `In`, a base object of `Out`, and a function `(Out, In) -> Out`, runs a fold operation to output the `Out` reduction. While this can be achieved using `.reduce` in the Stream API, that API requires the invoker to deal with the parallel case, meaning the user must pass in a function that defines how to combine one `Out` with another `Out` in the event that the reduction is taking place on a parallel stream. This library provides a simple linear version.    
+
+Before:
+```java
+var input = List.of(5, 4, 3, 8, 7, 6, 1);
+var output = 0;
+for(int each : input) {
+    output = output * 10 + each;
+}
+// output = 5_438_761
+```
+
+After:
+```java
+var input = List.of(5, 4, 3, 8, 7, 6, 1);
+var output = collections.fold(input, 0, (acc, each) -> acc + 10 + each);
+// output = 5_438_761
+```
