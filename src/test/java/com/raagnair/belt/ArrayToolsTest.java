@@ -218,48 +218,39 @@ public class ArrayToolsTest {
 
         assertArrayEquals(
                 new String[]{"1.0", "2.5", "3.75", "4.0", "5.5"},
-                arrays.map(input, new String[input.length], String::valueOf)
-        );
+                arrays.map(input, new String[input.length], String::valueOf));
 
         assertArrayEquals(
                 new boolean[]{false, false, false, false, false},
-                arrays.map(input, new boolean[input.length], f -> f < 0)
-        );
+                arrays.map(input, new boolean[input.length], f -> f < 0));
 
         assertArrayEquals(
                 new byte[]{1, 2, 3, 4, 5},
-                arrays.map(input, new byte[input.length], f -> (byte) f)
-        );
+                arrays.map(input, new byte[input.length], f -> (byte) f));
 
         assertArrayEquals(
                 new char[]{'A', 'B', 'C', 'D', 'E'},
-                arrays.map(input, new char[input.length], f -> (char) ('A' + (int) f - 1))
-        );
+                arrays.map(input, new char[input.length], f -> (char) ('A' + (int) f - 1)));
 
         assertArrayEquals(
                 new short[]{1, 2, 3, 4, 5},
-                arrays.map(input, new short[input.length], f -> (short) f)
-        );
+                arrays.map(input, new short[input.length], f -> (short) f));
 
         assertArrayEquals(
                 new int[]{1, 2, 3, 4, 5},
-                arrays.map(input, new int[input.length], f -> (int) f)
-        );
+                arrays.map(input, new int[input.length], f -> (int) f));
 
         assertArrayEquals(
                 new float[]{1.0f, 2.5f, 3.75f, 4.0f, 5.5f},
-                arrays.map(input, new float[input.length], f -> f)
-        );
+                arrays.map(input, new float[input.length], f -> f));
 
         assertArrayEquals(
                 new long[]{1L, 2L, 3L, 4L, 5L},
-                arrays.map(input, new long[input.length], f -> (long) f)
-        );
+                arrays.map(input, new long[input.length], f -> (long) f));
 
         assertArrayEquals(
                 new double[]{1.0, 2.5, 3.75, 4.0, 5.5},
-                arrays.map(input, new double[input.length], f -> (double) f)
-        );
+                arrays.map(input, new double[input.length], f -> (double) f));
     }
 
 
