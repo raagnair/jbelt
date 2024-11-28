@@ -7,7 +7,7 @@ import java.util.function.Function;
 public enum ArrayTools {
     INSTANCE;
 
-    public static <O> O[] map(boolean[] input, O[] dest, BooleanFn<O> mapFn) {
+    public <O> O[] map(boolean[] input, O[] dest, BooleanFn<O> mapFn) {
         for (int inputIdx = 0; inputIdx < input.length; inputIdx++) {
             dest[inputIdx] = mapFn.apply(input[inputIdx]);
         }
@@ -70,7 +70,7 @@ public enum ArrayTools {
         return dest;
     }
 
-    public static <O> O[] map(byte[] input, O[] dest, ByteFn<O> mapFn) {
+    public <O> O[] map(byte[] input, O[] dest, ByteFn<O> mapFn) {
         for (int inputIdx = 0; inputIdx < input.length; inputIdx++) {
             dest[inputIdx] = mapFn.apply(input[inputIdx]);
         }
@@ -133,7 +133,7 @@ public enum ArrayTools {
         return dest;
     }
 
-    public static <O> O[] map(char[] input, O[] dest, CharFn<O> mapFn) {
+    public  <O> O[] map(char[] input, O[] dest, CharFn<O> mapFn) {
         for (int inputIdx = 0; inputIdx < input.length; inputIdx++) {
             dest[inputIdx] = mapFn.apply(input[inputIdx]);
         }
@@ -196,7 +196,7 @@ public enum ArrayTools {
         return dest;
     }
 
-    public static <O> O[] map(short[] input, O[] dest, ShortFn<O> mapFn) {
+    public  <O> O[] map(short[] input, O[] dest, ShortFn<O> mapFn) {
         for (int inputIdx = 0; inputIdx < input.length; inputIdx++) {
             dest[inputIdx] = mapFn.apply(input[inputIdx]);
         }

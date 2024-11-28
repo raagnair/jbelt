@@ -1,7 +1,6 @@
 package com.raagnair.belt;
 
 import java.io.IOException;
-import java.util.List;
 
 public class Belt {
     public static CollectionTools collections = CollectionTools.INSTANCE;
