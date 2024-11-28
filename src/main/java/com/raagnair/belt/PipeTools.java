@@ -26,6 +26,11 @@ public enum PipeTools {
         public void to(Consumer<T> pipeCns) {
             pipeCns.accept(value);
         }
+
+        public PipeVal<T> via(Consumer<T> pipeCns) {
+            pipeCns.accept(value);
+            return this;
+        }
     }
 
     public static class RawPipeVal {
@@ -49,8 +54,26 @@ public enum PipeTools {
             return value;
         }
 
+        public <T> T get(Class<T> cls) {
+            return cls.cast(value);
+        }
+
         public void to(Consumer<Object> consumer) {
             consumer.accept(value);
+        }
+
+        public <T> void to(Class<? extends T> cls, Consumer<T> consumer) {
+            consumer.accept(cls.cast(value));
+        }
+
+        public RawPipeVal via(Consumer<Object> consumer) {
+            consumer.accept(value);
+            return this;
+        }
+
+        public <T> RawPipeVal via(Class<? extends T> cls, Consumer<T> consumer) {
+            consumer.accept(cls.cast(value));
+            return this;
         }
     }
 }
