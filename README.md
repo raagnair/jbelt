@@ -1,7 +1,7 @@
 # jbelt
 Things I wish were in Java's standard library.    
 
-# **Pipes**
+# Pipes
 Emulates the pipe notation from functional languages. This is useful when you want multiple operations performed sequentially on an initial input, and have no use for each intermediate step to be available as a variable in scope. This also can serve to make the code more readable.
 
 Before:
@@ -25,8 +25,41 @@ Pipe.of(input)
     .to(System.out::println);
 ```
 
+# Arrays
+**map** -- Convenience functions to map one array to another without requiring expensive intermediate boxed objects.
 
-# **Lambdas**
+Before:
+```java
+var input = {1, 2, 3};
+var output = Arrays.stream(input)
+    .map(String::valueOf)
+    .toArray(String[]::new);
+```
+
+After:
+```java
+var input = List.of(1, 2, 3);
+var output = arrays.map(input, new String[input.length], String::valueOf);
+```
+
+The above avoids the intermediate Stream<Integer> object. Another use of this map function is to alter elements in place, which is otherwise only possible with an old fashioned for-loop. This can be done by offering the same array for both input and destination.
+
+Before:
+```java
+var input = {1, 2, 3};
+for (int inputIdx = 0; inputIdx < input.length; inputIdx++) {
+    input[inputIdx] = input[inputIdx] * 2;
+}
+```
+
+After:
+```java
+var input = {1, 2, 3};
+arrays.map(input, input, i -> i * 2);
+```
+
+
+# Lambdas
 **uncheck** -- Takes a Function/Consumer with a checked exception, and turns it unchecked, by wrapping the exception in a RuntimeException. This is useful for cases where you're happy having the program halt if the aforementioned exception is thrown, and don't want to deal with catching the exception or coloring your current method's signature with it. This comes especially in handy when dealing with lambdas, because using methods with checked exceptions is impossible and requires you to write out the try-catch block every time.
 
 Before:
