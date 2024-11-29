@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import static com.raagnair.belt.Belt.lambda;
+import static com.raagnair.belt.Belt.lam;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -27,7 +27,7 @@ public class LambdaToolsTest {
         assertEquals(results, List.of(50, 25, 10));
         results.clear();
 
-        inputs.forEach(lambda.forgive(insertConsumer));
+        inputs.forEach(lam.forgive(insertConsumer));
         assertEquals(results, List.of(50, 25, 10, 5, 2));
     }
 
@@ -40,10 +40,10 @@ public class LambdaToolsTest {
 
         assertThrows(
                 ArithmeticException.class,
-                () -> inputs.forEach(lambda.forgive(insertConsumer, IOException.class)));
+                () -> inputs.forEach(lam.forgive(insertConsumer, IOException.class)));
         results.clear();
 
-        inputs.forEach(lambda.forgive(insertConsumer, ArithmeticException.class));
+        inputs.forEach(lam.forgive(insertConsumer, ArithmeticException.class));
         assertEquals(results, List.of(50, 25, 10, 5, 2));
     }
 
@@ -57,7 +57,7 @@ public class LambdaToolsTest {
 
         var exceptionThrown = assertThrows(
                 RuntimeException.class,
-                () -> input.forEach(lambda.uncheck(str -> {
+                () -> input.forEach(lam.uncheck(str -> {
                     results.add(Class.forName(str));
                 })));
         assertEquals(ClassNotFoundException.class, exceptionThrown.getCause().getClass());
@@ -72,7 +72,7 @@ public class LambdaToolsTest {
                 LambdaTools.class.getName());
         List<Class<?>> results = new ArrayList<>();
 
-        input.forEach(lambda.uncheckForgive(str -> results.add(Class.forName(str))));
+        input.forEach(lam.uncheckForgive(str -> results.add(Class.forName(str))));
         assertEquals(
                 List.of(LambdaToolsTest.class, LambdaTools.class),
                 results);
@@ -88,13 +88,13 @@ public class LambdaToolsTest {
 
         var exceptionThrown = assertThrows(
                 RuntimeException.class,
-                () -> input.forEach(lambda.uncheckForgive(str -> {
+                () -> input.forEach(lam.uncheckForgive(str -> {
                     results.add(Class.forName(str));
                 }, ArithmeticException.class)));
         assertEquals(ClassNotFoundException.class, exceptionThrown.getCause().getClass());
         results.clear();
 
-        input.forEach(lambda.uncheckForgive(str -> {
+        input.forEach(lam.uncheckForgive(str -> {
             results.add(Class.forName(str));
         }, ClassNotFoundException.class));
 
@@ -109,7 +109,7 @@ public class LambdaToolsTest {
         List<Integer> inputs = List.of(1, 2, 5, 0, 10, 25);
 
         inputs.stream()
-                .map(lambda.forgive(i -> 50 / i, -123))
+                .map(lam.forgive(i -> 50 / i, -123))
                 .map(String::valueOf)
                 .forEach(results::add);
 
@@ -124,8 +124,8 @@ public class LambdaToolsTest {
         List<Integer> inputs = List.of(1, 2, 5, 0, 10, 25);
 
         inputs.stream()
-                .map(lambda.forgive(i -> 50 / i, null, ArithmeticException.class))
-                .map(lambda.forgive(Integer::longValue, -101, NullPointerException.class))
+                .map(lam.forgive(i -> 50 / i, null, ArithmeticException.class))
+                .map(lam.forgive(Integer::longValue, -101, NullPointerException.class))
                 .map(String::valueOf)
                 .forEach(results::add);
 
@@ -138,18 +138,18 @@ public class LambdaToolsTest {
         assertThrows(
                 ArithmeticException.class,
                 () -> inputs.stream()
-                        .map(lambda.forgive(
+                        .map(lam.forgive(
                                 i -> 50 / i, null,
                                 IOException.class /* ArithmeticException.class */))
-                        .map(lambda.forgive(Integer::longValue, -101, NullPointerException.class))
+                        .map(lam.forgive(Integer::longValue, -101, NullPointerException.class))
                         .map(String::valueOf)
                         .forEach(results::add));
 
         assertThrows(
                 NullPointerException.class,
                 () -> inputs.stream()
-                        .map(lambda.forgive(i -> 50 / i, null, ArithmeticException.class))
-                        .map(lambda.forgive(
+                        .map(lam.forgive(i -> 50 / i, null, ArithmeticException.class))
+                        .map(lam.forgive(
                                 Integer::longValue, -101,
                                 IOException.class /* NullPointerException.class */))
                         .map(String::valueOf)
@@ -166,7 +166,7 @@ public class LambdaToolsTest {
         var exceptionThrown = assertThrows(
                 RuntimeException.class,
                 () -> input.stream()
-                        .map(lambda.uncheck((String s) -> Class.forName(s)))
+                        .map(lam.uncheck((String s) -> Class.forName(s)))
                         .toList());
         assertEquals(ClassNotFoundException.class, exceptionThrown.getCause().getClass());
     }
@@ -181,7 +181,7 @@ public class LambdaToolsTest {
         assertEquals(
                 List.of(LambdaToolsTest.class, Object.class, LambdaTools.class),
                 input.stream()
-                        .map(lambda.uncheckForgive(Class::forName, Object.class))
+                        .map(lam.uncheckForgive(Class::forName, Object.class))
                         .toList());
     }
 
@@ -195,14 +195,14 @@ public class LambdaToolsTest {
         var exceptionThrown = assertThrows(
                 RuntimeException.class,
                 () -> input.stream()
-                        .map(lambda.uncheckForgive(Class::forName, Object.class, ArithmeticException.class))
+                        .map(lam.uncheckForgive(Class::forName, Object.class, ArithmeticException.class))
                         .toList());
         assertEquals(ClassNotFoundException.class, exceptionThrown.getCause().getClass());
 
         assertEquals(
                 List.of(LambdaToolsTest.class, Object.class, LambdaTools.class),
                 input.stream()
-                        .map(lambda.uncheckForgive(Class::forName, Object.class, ClassNotFoundException.class))
+                        .map(lam.uncheckForgive(Class::forName, Object.class, ClassNotFoundException.class))
                         .toList());
     }
 }

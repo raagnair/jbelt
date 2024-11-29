@@ -84,7 +84,7 @@ public enum LambdaTools {
             try {
                 throwingConsumer.accept(input);
             } catch (Exception e) {
-                for (Class<? extends Exception> exCls : ex) if(exCls.isInstance(e)) return;
+                for (Class<? extends Exception> exCls : ex) if (exCls.isInstance(e)) return;
                 throw new RuntimeException(e);
             }
         };

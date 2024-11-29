@@ -133,7 +133,7 @@ public enum ArrayTools {
         return dest;
     }
 
-    public  <O> O[] map(char[] input, O[] dest, CharFn<O> mapFn) {
+    public <O> O[] map(char[] input, O[] dest, CharFn<O> mapFn) {
         for (int inputIdx = 0; inputIdx < input.length; inputIdx++) {
             dest[inputIdx] = mapFn.apply(input[inputIdx]);
         }
@@ -196,7 +196,7 @@ public enum ArrayTools {
         return dest;
     }
 
-    public  <O> O[] map(short[] input, O[] dest, ShortFn<O> mapFn) {
+    public <O> O[] map(short[] input, O[] dest, ShortFn<O> mapFn) {
         for (int inputIdx = 0; inputIdx < input.length; inputIdx++) {
             dest[inputIdx] = mapFn.apply(input[inputIdx]);
         }
