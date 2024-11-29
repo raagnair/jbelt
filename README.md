@@ -26,7 +26,10 @@ Pipe.of(input)
 ```
 
 # Tuples
-Useful records to represent tuples of values. This lets Java methods return multiple values together without the developer having to create one-off classes or records to hold these values. This also provides stronger type-safety than returning an array of Objects that then need to be unsafely cast to be used.
+Useful records to represent tuples of values.
+
+## signature
+This lets Java methods return multiple values together without the developer having to create one-off classes or records to hold these values. This also provides stronger type-safety than returning an array of Objects that then need to be unsafely cast to be used. 
 
 Before:
 ```java
@@ -49,6 +52,27 @@ public Tuple2<String, Integer> getNameAndHeight(long id);
 public Tuple2<Integer, Double> getHeightAndWeight(long id);
 public Tuple2<String, String> getNameAndEmail(long id);
 public Tuple3<String, Integer, String> getNameAndHeightAndEmail(long id);
+```
+
+## creation
+Easy association of values together. 
+
+Before:
+```java
+void process(
+    Integer idA, Person personA, String emailA, String addrA,
+    Integer idB, Person personB, String emailB, String addrB);
+
+process(102, "Kon", "ko@n.com", "12 K dr USA", 204, "Unj", "un@j.com", "41 U st CA");
+```
+
+After:
+```java
+void process(
+    Tuple4<Integer, Person, String, String> a,
+    Tuple4<String, Person, String, String> b);
+
+process(tup.of(102, "Kon", "ko@n.com", "12 K dr USA"), tup.of(204, "Unj", "un@j.com", "41 U st CA"));
 ```
 
 # Arrays
