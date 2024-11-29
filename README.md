@@ -1,4 +1,4 @@
-# jbelt
+# Java Tool Belt (Belt)
 Things I wish were in Java's standard library.    
 
 # Pipes
@@ -23,6 +23,32 @@ Pipe.of(input)
     .pipe(operationC)
     .pipe(operationD)
     .to(System.out::println);
+```
+
+# Tuples
+Useful records to represent tuples of values. This lets Java methods return multiple values together without the developer having to create one-off classes or records to hold these values. This also provides stronger type-safety than returning an array of Objects that then need to be unsafely cast to be used.
+
+Before:
+```java
+record NameAndHeight(String name, Integer height) {}
+public NameAndHeight getNameAndHeight(long id);
+
+record HeightAndWeight(Integer height, Double weight) {}
+public HeightAndWeight getHeightAndWeight(long id);
+
+record NameAndEmail(String name, String email) {}
+public NameAndEmail getNameAndEmail(long id);
+
+record NameAndHeightAndEmail(String name, Integer height, String email) {}
+public NameAndHeightAndEmail getNameAndHeightAndEmail(long id);
+```
+
+After:
+```java
+public Tuple2<String, Integer> getNameAndHeight(long id);
+public Tuple2<Integer, Double> getHeightAndWeight(long id);
+public Tuple2<String, String> getNameAndEmail(long id);
+public Tuple3<String, Integer, String> getNameAndHeightAndEmail(long id);
 ```
 
 # Arrays
@@ -106,7 +132,7 @@ List.of("504", "200", "403", "oops", "123").stream()
     .toList();
 ```
 
-**Collections**
+# Collections
 ## fold     
 Given a collection of `In`, a base object of `Out`, and a function `(Out, In) -> Out`, runs a fold operation to output the `Out` reduction. While this can be achieved using `.reduce` in the Stream API, that API requires the invoker to deal with the parallel case, meaning the user must pass in a function that defines how to combine one `Out` with another `Out` in the event that the reduction is taking place on a parallel stream. This library provides a simple linear version.    
 
