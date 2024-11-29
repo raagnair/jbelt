@@ -54,14 +54,14 @@ public Tuple2<String, String> getNameAndEmail(long id);
 public Tuple3<String, Integer, String> getNameAndHeightAndEmail(long id);
 ```
 
-## creation
+## association
 Easy association of values together. 
 
 Before:
 ```java
 void process(
     Integer idA, Person personA, String emailA, String addrA,
-    Integer idB, Person personB, String emailB, String addrB);
+    Integer idB, Person personB, String emailB, String addrB); // 8 parameters
 
 process(102, "Kon", "ko@n.com", "12 K dr USA", 204, "Unj", "un@j.com", "41 U st CA");
 ```
@@ -70,7 +70,7 @@ After:
 ```java
 void process(
     Tuple4<Integer, Person, String, String> a,
-    Tuple4<String, Person, String, String> b);
+    Tuple4<String, Person, String, String> b); // 2 parameters
 
 process(tup.of(102, "Kon", "ko@n.com", "12 K dr USA"), tup.of(204, "Unj", "un@j.com", "41 U st CA"));
 ```
