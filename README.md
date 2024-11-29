@@ -1,6 +1,49 @@
 # Java Tool Belt (Belt)
 Things I wish were in Java's standard library.    
 
+# Getting Started
+You can include this library into your project using jitpack.     
+More details: https://jitpack.io/#raagnair/jbelt     
+
+## maven:
+Repositories:   
+```xml
+	<repositories>
+		<repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+```
+
+Dependencies:
+```xml
+	<dependency>
+	    <groupId>com.github.raagnair</groupId>
+	    <artifactId>jbelt</artifactId>
+	    <version>Tag</version>
+	</dependency>
+```
+
+## gradle:
+Dependency Resolution Management:   
+```kotlin
+dependencyResolutionManagement {
+		repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+		repositories {
+			mavenCentral()
+			maven { url 'https://jitpack.io' }
+		}
+	}
+```
+
+Dependencies:   
+```kotlin
+	dependencies {
+	        implementation 'com.github.raagnair:jbelt:Tag'
+	}
+```
+
 # Pipes
 Emulates the pipe notation from functional languages. This is useful when you want multiple operations performed sequentially on an initial input, and have no use for each intermediate step to be available as a variable in scope. This also can serve to make the code more readable.
 
