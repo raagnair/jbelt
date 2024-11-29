@@ -18,4 +18,15 @@ public class CollectionToolsTest {
                         1000,
                         (acc, elem) -> acc + elem.length()));
     }
+
+    @Test
+    void SizeIf() {
+        assertEquals(
+                4,
+                col.sizeIf(List.of('a', 'B', 'c', 'D', 'e', 'F', 'g'), Character::isLowerCase));
+
+        assertEquals(
+                3,
+                col.sizeIf(List.of('a', 'B', 'c', 'D', 'e', 'F', 'g'), Character::isUpperCase));
+    }
 }
