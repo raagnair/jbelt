@@ -12,12 +12,12 @@ System.out.println(operationD(operationC(operationB(operationA(input)))));
 
 After:
 ```java
-var result = Pipe.of(input)
+var result = pip.of(input)
     .pipe(operation1)
     .pipe(operation2)
     .pipe(operation3)
     .get()
-Pipe.of(input)
+pip.of(input)
     .pipe(operationA)
     .pipe(operationB)
     .pipe(operationC)
@@ -90,7 +90,7 @@ var output = Arrays.stream(input)
 After:
 ```java
 var input = List.of(1, 2, 3);
-var output = arrays.map(input, new String[input.length], String::valueOf);
+var output = arr.map(input, new String[input.length], String::valueOf);
 ```
 
 The above avoids the intermediate Stream<Integer> object. Another use of this map function is to alter elements in place, which is otherwise only possible with an old fashioned for-loop. This can be done by offering the same array for both input and destination.
@@ -106,7 +106,7 @@ for (int inputIdx = 0; inputIdx < input.length; inputIdx++) {
 After:
 ```java
 var input = {1, 2, 3};
-arrays.map(input, input, i -> i * 2);
+arr.map(input, input, i -> i * 2);
 ```
 
 
@@ -173,6 +173,6 @@ for(int each : input) {
 After:
 ```java
 var input = List.of(5, 4, 3, 8, 7, 6, 1);
-var output = collections.fold(input, 0, (acc, each) -> acc + 10 + each);
+var output = col.fold(input, 0, (acc, each) -> acc + 10 + each);
 // output = 5_438_761
 ```
