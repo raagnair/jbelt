@@ -1,6 +1,7 @@
 package com.raagnair.belt;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
 
@@ -21,5 +22,12 @@ public enum CollectionTools {
             if (pred.test(elem)) rv++;
         }
         return rv;
+    }
+
+    public <E> boolean isEmptyIf(Collection<E> input, Predicate<E> pred) {
+        for (E e : input) {
+            if (pred.test(e)) return false;
+        }
+        return true;
     }
 }
