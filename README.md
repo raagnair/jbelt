@@ -26,7 +26,8 @@ Pipe.of(input)
 ```
 
 # Arrays
-**map** -- Convenience functions to map one array to another without requiring expensive intermediate boxed objects.
+## map
+Convenience functions to map one array to another without requiring expensive intermediate boxed objects.
 
 Before:
 ```java
@@ -60,7 +61,8 @@ arrays.map(input, input, i -> i * 2);
 
 
 # Lambdas
-**uncheck** -- Takes a Function/Consumer with a checked exception, and turns it unchecked, by wrapping the exception in a RuntimeException. This is useful for cases where you're happy having the program halt if the aforementioned exception is thrown, and don't want to deal with catching the exception or coloring your current method's signature with it. This comes especially in handy when dealing with lambdas, because using methods with checked exceptions is impossible and requires you to write out the try-catch block every time.
+## uncheck   
+Takes a Function/Consumer with a checked exception, and turns it unchecked, by wrapping the exception in a RuntimeException. This is useful for cases where you're happy having the program halt if the aforementioned exception is thrown, and don't want to deal with catching the exception or coloring your current method's signature with it. This comes especially in handy when dealing with lambdas, because using methods with checked exceptions is impossible and requires you to write out the try-catch block every time.
 
 Before:
 ```java
@@ -82,7 +84,8 @@ List.of("String.class", "Integer.class", "MyFunction.class").stream()
     .toList();
 ```
 
-**recover** -- Takes a Function/Consumer that throws a RuntimeException and suppresses it. In the case of a Consumer, it does nothing. In the case of a Function, it outputs the provided default value. This is convenient in cases where you want to process input, and ignore the errors.
+## recover   
+Takes a Function/Consumer that throws a RuntimeException and suppresses it. In the case of a Consumer, it does nothing. In the case of a Function, it outputs the provided default value. This is convenient in cases where you want to process input, and ignore the errors.
 
 Before:
 ```java
@@ -104,7 +107,8 @@ List.of("504", "200", "403", "oops", "123").stream()
 ```
 
 **Collections**
-**fold** -- Given a collection of `In`, a base object of `Out`, and a function `(Out, In) -> Out`, runs a fold operation to output the `Out` reduction. While this can be achieved using `.reduce` in the Stream API, that API requires the invoker to deal with the parallel case, meaning the user must pass in a function that defines how to combine one `Out` with another `Out` in the event that the reduction is taking place on a parallel stream. This library provides a simple linear version.    
+## fold     
+Given a collection of `In`, a base object of `Out`, and a function `(Out, In) -> Out`, runs a fold operation to output the `Out` reduction. While this can be achieved using `.reduce` in the Stream API, that API requires the invoker to deal with the parallel case, meaning the user must pass in a function that defines how to combine one `Out` with another `Out` in the event that the reduction is taking place on a parallel stream. This library provides a simple linear version.    
 
 Before:
 ```java
