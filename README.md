@@ -176,3 +176,26 @@ var input = List.of(5, 4, 3, 8, 7, 6, 1);
 var output = col.fold(input, 0, (acc, each) -> acc + 10 + each);
 // output = 5_438_761
 ```
+
+## sizeIf
+An efficient size function for elements of a collection that match a certain predicate. 
+
+Before:
+```java
+var input = List.of(1, 2, 3, 4, 5)
+input
+    .stream()
+    .filter(i -> i % 2 == 0)
+    .count(); // result: 2, slow, memory intensive
+
+var sizeEvens = 0;
+for(int i : input) {
+    if (i % 2 == 0) sizeEvens++;
+}
+// sizeEvens: 2, fast, messy & imperative
+```
+
+After:
+```java
+col.sizeIf(input, i -> i % 2 == 0); // result: 2, fast, clean
+```
