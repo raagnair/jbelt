@@ -1,7 +1,9 @@
 package com.raagnair.belt;
 
+import com.raagnair.belt.iterators.*;
 import com.raagnair.belt.primitives.*;
 
+import java.util.Iterator;
 import java.util.function.Function;
 
 public enum ArrayTools {
@@ -385,6 +387,70 @@ public enum ArrayTools {
         return dest;
     }
 
+
+    public <O> O[] map(long[] input, O[] dest, LongFn<O> mapFn) {
+        for (int inputIdx = 0; inputIdx < input.length; inputIdx++) {
+            dest[inputIdx] = mapFn.apply(input[inputIdx]);
+        }
+        return dest;
+    }
+
+    public boolean[] map(long[] input, boolean[] dest, LongToBooleanFn mapFn) {
+        for (int i = 0; i < input.length; i++) {
+            dest[i] = mapFn.apply(input[i]);
+        }
+        return dest;
+    }
+
+    public byte[] map(long[] input, byte[] dest, LongToByteFn mapFn) {
+        for (int i = 0; i < input.length; i++) {
+            dest[i] = mapFn.apply(input[i]);
+        }
+        return dest;
+    }
+
+    public char[] map(long[] input, char[] dest, LongToCharFn mapFn) {
+        for (int i = 0; i < input.length; i++) {
+            dest[i] = mapFn.apply(input[i]);
+        }
+        return dest;
+    }
+
+    public short[] map(long[] input, short[] dest, LongToShortFn mapFn) {
+        for (int i = 0; i < input.length; i++) {
+            dest[i] = mapFn.apply(input[i]);
+        }
+        return dest;
+    }
+
+    public int[] map(long[] input, int[] dest, LongToIntFn mapFn) {
+        for (int i = 0; i < input.length; i++) {
+            dest[i] = mapFn.apply(input[i]);
+        }
+        return dest;
+    }
+
+    public float[] map(long[] input, float[] dest, LongToFloatFn mapFn) {
+        for (int i = 0; i < input.length; i++) {
+            dest[i] = mapFn.apply(input[i]);
+        }
+        return dest;
+    }
+
+    public long[] map(long[] input, long[] dest, LongToLongFn mapFn) {
+        for (int i = 0; i < input.length; i++) {
+            dest[i] = mapFn.apply(input[i]);
+        }
+        return dest;
+    }
+
+    public double[] map(long[] input, double[] dest, LongToDoubleFn mapFn) {
+        for (int i = 0; i < input.length; i++) {
+            dest[i] = mapFn.apply(input[i]);
+        }
+        return dest;
+    }
+
     public <O> O[] map(double[] input, O[] dest, DoubleFn<O> mapFn) {
         for (int inputIdx = 0; inputIdx < input.length; inputIdx++) {
             dest[inputIdx] = mapFn.apply(input[inputIdx]);
@@ -453,5 +519,114 @@ public enum ArrayTools {
             dest[inputIdx] = mapFn.apply(input[inputIdx]);
         }
         return dest;
+    }
+
+    public <I> Iterator<I[]> windows(I[] input, int maxWindowSize, Function<Integer, I[]> newArrayFn) {
+        return windows(input, maxWindowSize, maxWindowSize, newArrayFn, false);
+    }
+
+    public <I> Iterator<I[]> windows(I[] input, int maxWindowSize, int stepSize, Function<Integer, I[]> newArrayFn) {
+        return windows(input, maxWindowSize, stepSize, newArrayFn, false);
+    }
+
+    public <I> Iterator<I[]> windows(
+            I[] input, int maxWindowSize, int stepSize, Function<Integer, I[]> newArrayFn, boolean reuseWindow) {
+        return new WindowArrayIterator<>(input, maxWindowSize, stepSize, newArrayFn, reuseWindow);
+    }
+
+    public Iterator<boolean[]> windows(boolean[] input, int maxWindowSize) {
+        return windows(input, maxWindowSize, maxWindowSize);
+    }
+
+    public Iterator<boolean[]> windows(boolean[] input, int maxWindowSize, int stepSize) {
+        return windows(input, maxWindowSize, stepSize, false);
+    }
+
+    public Iterator<boolean[]> windows(boolean[] input, int maxWindowSize, int stepSize, boolean reuseWindow) {
+        return new WindowBooleanArrayIter(input, maxWindowSize, stepSize, reuseWindow);
+    }
+
+    public Iterator<byte[]> windows(byte[] input, int maxWindowSize) {
+        return windows(input, maxWindowSize, maxWindowSize);
+    }
+
+    public Iterator<byte[]> windows(byte[] input, int maxWindowSize, int stepSize) {
+        return windows(input, maxWindowSize, stepSize, false);
+    }
+
+    public Iterator<byte[]> windows(byte[] input, int maxWindowSize, int stepSize, boolean reuseWindow) {
+        return new WindowByteArrayIter(input, maxWindowSize, stepSize, reuseWindow);
+    }
+
+    public Iterator<char[]> windows(char[] input, int maxWindowSize) {
+        return windows(input, maxWindowSize, maxWindowSize);
+    }
+
+    public Iterator<char[]> windows(char[] input, int maxWindowSize, int stepSize) {
+        return windows(input, maxWindowSize, stepSize, false);
+    }
+
+    public Iterator<char[]> windows(char[] input, int maxWindowSize, int stepSize, boolean reuseWindow) {
+        return new WindowCharArrayIter(input, maxWindowSize, stepSize, reuseWindow);
+    }
+
+    public Iterator<short[]> windows(short[] input, int maxWindowSize) {
+        return windows(input, maxWindowSize, maxWindowSize);
+    }
+
+    public Iterator<short[]> windows(short[] input, int maxWindowSize, int stepSize) {
+        return windows(input, maxWindowSize, stepSize, false);
+    }
+
+    public Iterator<short[]> windows(short[] input, int maxWindowSize, int stepSize, boolean reuseWindow) {
+        return new WindowShortArrayIter(input, maxWindowSize, stepSize, reuseWindow);
+    }
+
+    public Iterator<int[]> windows(int[] input, int maxWindowSize) {
+        return windows(input, maxWindowSize, maxWindowSize);
+    }
+
+    public Iterator<int[]> windows(int[] input, int maxWindowSize, int stepSize) {
+        return windows(input, maxWindowSize, stepSize, false);
+    }
+
+    public Iterator<int[]> windows(int[] input, int maxWindowSize, int stepSize, boolean reuseWindow) {
+        return new WindowIntArrayIter(input, maxWindowSize, stepSize, reuseWindow);
+    }
+
+    public Iterator<float[]> windows(float[] input, int maxWindowSize) {
+        return windows(input, maxWindowSize, maxWindowSize);
+    }
+
+    public Iterator<float[]> windows(float[] input, int maxWindowSize, int stepSize) {
+        return windows(input, maxWindowSize, stepSize, false);
+    }
+
+    public Iterator<float[]> windows(float[] input, int maxWindowSize, int stepSize, boolean reuseWindow) {
+        return new WindowFloatArrayIter(input, maxWindowSize, stepSize, reuseWindow);
+    }
+
+    public Iterator<double[]> windows(double[] input, int maxWindowSize) {
+        return windows(input, maxWindowSize, maxWindowSize);
+    }
+
+    public Iterator<double[]> windows(double[] input, int maxWindowSize, int stepSize) {
+        return windows(input, maxWindowSize, stepSize, false);
+    }
+
+    public Iterator<double[]> windows(double[] input, int maxWindowSize, int stepSize, boolean reuseWindow) {
+        return new WindowDoubleArrayIter(input, maxWindowSize, stepSize, reuseWindow);
+    }
+
+    public Iterator<long[]> windows(long[] input, int maxWindowSize) {
+        return windows(input, maxWindowSize, maxWindowSize);
+    }
+
+    public Iterator<long[]> windows(long[] input, int maxWindowSize, int stepSize) {
+        return windows(input, maxWindowSize, stepSize, false);
+    }
+
+    public Iterator<long[]> windows(long[] input, int maxWindowSize, int stepSize, boolean reuseWindow) {
+        return new WindowLongArrayIter(input, maxWindowSize, stepSize, reuseWindow);
     }
 }

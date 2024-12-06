@@ -2,10 +2,69 @@ package com.raagnair.belt;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Iterator;
+
 import static com.raagnair.belt.Belt.arr;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ArrayToolsTest {
+
+    @Test
+    void GenericArrays() {
+        String[] input = {"alpha", "bravo", "charlie", "delta", "epsilon"};
+
+        assertArrayEquals(
+                new Integer[]{5, 5, 7, 5, 7},
+                arr.map(input, new Integer[5], String::length));
+    }
+
+    @Test
+    void StringArrays_Windows() {
+        String[] input = {"one", "two", "three", "four", "five"};
+        Iterator<String[]> stringWindowIter;
+        String[] firstWindow, secondWindow;
+
+        stringWindowIter = arr.windows(input, 2, String[]::new);
+        assertArrayEquals(new String[]{"one", "two"}, stringWindowIter.next());
+        assertArrayEquals(new String[]{"three", "four"}, stringWindowIter.next());
+        assertArrayEquals(new String[]{"five"}, stringWindowIter.next());
+        assertFalse(stringWindowIter.hasNext());
+
+        stringWindowIter = arr.windows(input, 3, 1, String[]::new);
+        assertArrayEquals(new String[]{"one", "two", "three"}, stringWindowIter.next());
+        assertArrayEquals(new String[]{"two", "three", "four"}, stringWindowIter.next());
+        assertArrayEquals(new String[]{"three", "four", "five"}, stringWindowIter.next());
+        assertFalse(stringWindowIter.hasNext());
+
+        stringWindowIter = arr.windows(input, 3, 2, String[]::new);
+        assertArrayEquals(new String[]{"one", "two", "three"}, stringWindowIter.next());
+        assertArrayEquals(new String[]{"three", "four", "five"}, stringWindowIter.next());
+        assertFalse(stringWindowIter.hasNext());
+
+        stringWindowIter = arr.windows(input, 3, 3, String[]::new);
+        assertArrayEquals(new String[]{"one", "two", "three"}, stringWindowIter.next());
+        assertArrayEquals(new String[]{"four", "five"}, stringWindowIter.next());
+        assertFalse(stringWindowIter.hasNext());
+
+        stringWindowIter = arr.windows(input, 3, 2, String[]::new, true);
+        firstWindow = stringWindowIter.next();
+        assertArrayEquals(new String[]{"one", "two", "three"}, firstWindow);
+        secondWindow = stringWindowIter.next();
+        assertArrayEquals(new String[]{"three", "four", "five"}, secondWindow);
+        assertSame(firstWindow, secondWindow);
+        assertFalse(stringWindowIter.hasNext());
+
+        stringWindowIter = arr.windows(input, 2, 2, String[]::new, true);
+        firstWindow = stringWindowIter.next();
+        assertArrayEquals(new String[]{"one", "two"}, firstWindow);
+        secondWindow = stringWindowIter.next();
+        assertArrayEquals(new String[]{"three", "four"}, secondWindow);
+        var thirdWindow = stringWindowIter.next();
+        assertArrayEquals(new String[]{"five"}, thirdWindow);
+        assertSame(firstWindow, secondWindow);
+        assertNotSame(firstWindow, thirdWindow);
+    }
+
 
     @Test
     void BooleanArrays() {
@@ -46,6 +105,53 @@ public class ArrayToolsTest {
         assertArrayEquals(
                 new double[]{1, 1, 0, 0, 1},
                 arr.map(input, new double[input.length], in -> in ? (double) 1 : 0));
+    }
+
+    @Test
+    void BooleanArrays_Windows() {
+        boolean[] input = {true, true, false, false, true};
+        Iterator<boolean[]> boolWindowIter;
+        boolean[] firstWindow, secondWindow;
+
+        boolWindowIter = arr.windows(input, 2);
+        assertArrayEquals(new boolean[]{true, true}, boolWindowIter.next());
+        assertArrayEquals(new boolean[]{false, false}, boolWindowIter.next());
+        assertArrayEquals(new boolean[]{true}, boolWindowIter.next());
+        assertFalse(boolWindowIter.hasNext());
+
+        boolWindowIter = arr.windows(input, 3, 1);
+        assertArrayEquals(new boolean[]{true, true, false}, boolWindowIter.next());
+        assertArrayEquals(new boolean[]{true, false, false}, boolWindowIter.next());
+        assertArrayEquals(new boolean[]{false, false, true}, boolWindowIter.next());
+        assertFalse(boolWindowIter.hasNext());
+
+        boolWindowIter = arr.windows(input, 3, 2);
+        assertArrayEquals(new boolean[]{true, true, false}, boolWindowIter.next());
+        assertArrayEquals(new boolean[]{false, false, true}, boolWindowIter.next());
+        assertFalse(boolWindowIter.hasNext());
+
+        boolWindowIter = arr.windows(input, 3, 3);
+        assertArrayEquals(new boolean[]{true, true, false}, boolWindowIter.next());
+        assertArrayEquals(new boolean[]{false, true}, boolWindowIter.next());
+        assertFalse(boolWindowIter.hasNext());
+
+        boolWindowIter = arr.windows(input, 3, 2, true);
+        firstWindow = boolWindowIter.next();
+        assertArrayEquals(new boolean[]{true, true, false}, firstWindow);
+        secondWindow = boolWindowIter.next();
+        assertArrayEquals(new boolean[]{false, false, true}, secondWindow);
+        assertSame(firstWindow, secondWindow);
+        assertFalse(boolWindowIter.hasNext());
+
+        boolWindowIter = arr.windows(input, 2, 2, true);
+        firstWindow = boolWindowIter.next();
+        assertArrayEquals(new boolean[]{true, true}, firstWindow);
+        secondWindow = boolWindowIter.next();
+        assertArrayEquals(new boolean[]{false, false}, secondWindow);
+        var thirdWindow = boolWindowIter.next();
+        assertArrayEquals(new boolean[]{true}, thirdWindow);
+        assertSame(firstWindow, secondWindow);
+        assertNotSame(firstWindow, thirdWindow);
     }
 
     @Test
@@ -90,6 +196,53 @@ public class ArrayToolsTest {
     }
 
     @Test
+    void ByteArrays_Windows() {
+        byte[] input = {1, 2, 3, 4, 5};
+        Iterator<byte[]> byteWindowIter;
+        byte[] firstWindow, secondWindow;
+
+        byteWindowIter = arr.windows(input, 2);
+        assertArrayEquals(new byte[]{1, 2}, byteWindowIter.next());
+        assertArrayEquals(new byte[]{3, 4}, byteWindowIter.next());
+        assertArrayEquals(new byte[]{5}, byteWindowIter.next());
+        assertFalse(byteWindowIter.hasNext());
+
+        byteWindowIter = arr.windows(input, 3, 1);
+        assertArrayEquals(new byte[]{1, 2, 3}, byteWindowIter.next());
+        assertArrayEquals(new byte[]{2, 3, 4}, byteWindowIter.next());
+        assertArrayEquals(new byte[]{3, 4, 5}, byteWindowIter.next());
+        assertFalse(byteWindowIter.hasNext());
+
+        byteWindowIter = arr.windows(input, 3, 2);
+        assertArrayEquals(new byte[]{1, 2, 3}, byteWindowIter.next());
+        assertArrayEquals(new byte[]{3, 4, 5}, byteWindowIter.next());
+        assertFalse(byteWindowIter.hasNext());
+
+        byteWindowIter = arr.windows(input, 3, 3);
+        assertArrayEquals(new byte[]{1, 2, 3}, byteWindowIter.next());
+        assertArrayEquals(new byte[]{4, 5}, byteWindowIter.next());
+        assertFalse(byteWindowIter.hasNext());
+
+        byteWindowIter = arr.windows(input, 3, 2, true);
+        firstWindow = byteWindowIter.next();
+        assertArrayEquals(new byte[]{1, 2, 3}, firstWindow);
+        secondWindow = byteWindowIter.next();
+        assertArrayEquals(new byte[]{3, 4, 5}, secondWindow);
+        assertSame(firstWindow, secondWindow);
+        assertFalse(byteWindowIter.hasNext());
+
+        byteWindowIter = arr.windows(input, 2, 2, true);
+        firstWindow = byteWindowIter.next();
+        assertArrayEquals(new byte[]{1, 2}, firstWindow);
+        secondWindow = byteWindowIter.next();
+        assertArrayEquals(new byte[]{3, 4}, secondWindow);
+        var thirdWindow = byteWindowIter.next();
+        assertArrayEquals(new byte[]{5}, thirdWindow);
+        assertSame(firstWindow, secondWindow);
+        assertNotSame(firstWindow, thirdWindow);
+    }
+
+    @Test
     void CharArrays() {
         char[] input = {'a', 'b', 'c', 'd', 'e'};
 
@@ -128,6 +281,53 @@ public class ArrayToolsTest {
         assertArrayEquals(
                 new double[]{0.97, 0.98, 0.99, 1.0, 1.01},
                 arr.map(input, new double[input.length], c -> c / 100.0));
+    }
+
+    @Test
+    void CharArrays_Windows() {
+        char[] input = {'a', 'b', 'c', 'd', 'e'};
+        Iterator<char[]> charWindowIter;
+        char[] firstWindow, secondWindow;
+
+        charWindowIter = arr.windows(input, 2);
+        assertArrayEquals(new char[]{'a', 'b'}, charWindowIter.next());
+        assertArrayEquals(new char[]{'c', 'd'}, charWindowIter.next());
+        assertArrayEquals(new char[]{'e'}, charWindowIter.next());
+        assertFalse(charWindowIter.hasNext());
+
+        charWindowIter = arr.windows(input, 3, 1);
+        assertArrayEquals(new char[]{'a', 'b', 'c'}, charWindowIter.next());
+        assertArrayEquals(new char[]{'b', 'c', 'd'}, charWindowIter.next());
+        assertArrayEquals(new char[]{'c', 'd', 'e'}, charWindowIter.next());
+        assertFalse(charWindowIter.hasNext());
+
+        charWindowIter = arr.windows(input, 3, 2);
+        assertArrayEquals(new char[]{'a', 'b', 'c'}, charWindowIter.next());
+        assertArrayEquals(new char[]{'c', 'd', 'e'}, charWindowIter.next());
+        assertFalse(charWindowIter.hasNext());
+
+        charWindowIter = arr.windows(input, 3, 3);
+        assertArrayEquals(new char[]{'a', 'b', 'c'}, charWindowIter.next());
+        assertArrayEquals(new char[]{'d', 'e'}, charWindowIter.next());
+        assertFalse(charWindowIter.hasNext());
+
+        charWindowIter = arr.windows(input, 3, 2, true);
+        firstWindow = charWindowIter.next();
+        assertArrayEquals(new char[]{'a', 'b', 'c'}, firstWindow);
+        secondWindow = charWindowIter.next();
+        assertArrayEquals(new char[]{'c', 'd', 'e'}, secondWindow);
+        assertSame(firstWindow, secondWindow);
+        assertFalse(charWindowIter.hasNext());
+
+        charWindowIter = arr.windows(input, 2, 2, true);
+        firstWindow = charWindowIter.next();
+        assertArrayEquals(new char[]{'a', 'b'}, firstWindow);
+        secondWindow = charWindowIter.next();
+        assertArrayEquals(new char[]{'c', 'd'}, secondWindow);
+        var thirdWindow = charWindowIter.next();
+        assertArrayEquals(new char[]{'e'}, thirdWindow);
+        assertSame(firstWindow, secondWindow);
+        assertNotSame(firstWindow, thirdWindow);
     }
 
     @Test
@@ -213,6 +413,101 @@ public class ArrayToolsTest {
     }
 
     @Test
+    void IntArrays_Windows() {
+        int[] input = {1, 2, 3, 4, 5};
+        Iterator<int[]> intWindowIter;
+        int[] firstWindow, secondWindow;
+
+        intWindowIter = arr.windows(input, 2);
+        assertArrayEquals(new int[]{1, 2}, intWindowIter.next());
+        assertArrayEquals(new int[]{3, 4}, intWindowIter.next());
+        assertArrayEquals(new int[]{5}, intWindowIter.next());
+        assertFalse(intWindowIter.hasNext());
+
+        intWindowIter = arr.windows(input, 3, 1);
+        assertArrayEquals(new int[]{1, 2, 3}, intWindowIter.next());
+        assertArrayEquals(new int[]{2, 3, 4}, intWindowIter.next());
+        assertArrayEquals(new int[]{3, 4, 5}, intWindowIter.next());
+        assertFalse(intWindowIter.hasNext());
+
+        intWindowIter = arr.windows(input, 3, 2);
+        assertArrayEquals(new int[]{1, 2, 3}, intWindowIter.next());
+        assertArrayEquals(new int[]{3, 4, 5}, intWindowIter.next());
+        assertFalse(intWindowIter.hasNext());
+
+        intWindowIter = arr.windows(input, 3, 3);
+        assertArrayEquals(new int[]{1, 2, 3}, intWindowIter.next());
+        assertArrayEquals(new int[]{4, 5}, intWindowIter.next());
+        assertFalse(intWindowIter.hasNext());
+
+        intWindowIter = arr.windows(input, 3, 2, true);
+        firstWindow = intWindowIter.next();
+        assertArrayEquals(new int[]{1, 2, 3}, firstWindow);
+        secondWindow = intWindowIter.next();
+        assertArrayEquals(new int[]{3, 4, 5}, secondWindow);
+        assertSame(firstWindow, secondWindow);
+        assertFalse(intWindowIter.hasNext());
+
+        intWindowIter = arr.windows(input, 2, 2, true);
+        firstWindow = intWindowIter.next();
+        assertArrayEquals(new int[]{1, 2}, firstWindow);
+        secondWindow = intWindowIter.next();
+        assertArrayEquals(new int[]{3, 4}, secondWindow);
+        var thirdWindow = intWindowIter.next();
+        assertArrayEquals(new int[]{5}, thirdWindow);
+        assertSame(firstWindow, secondWindow);
+        assertNotSame(firstWindow, thirdWindow);
+    }
+
+
+    @Test
+    void ShortArrays_Windows() {
+        short[] input = {1, 2, 3, 4, 5};
+        Iterator<short[]> shortWindowIter;
+        short[] firstWindow, secondWindow;
+
+        shortWindowIter = arr.windows(input, 2);
+        assertArrayEquals(new short[]{1, 2}, shortWindowIter.next());
+        assertArrayEquals(new short[]{3, 4}, shortWindowIter.next());
+        assertArrayEquals(new short[]{5}, shortWindowIter.next());
+        assertFalse(shortWindowIter.hasNext());
+
+        shortWindowIter = arr.windows(input, 3, 1);
+        assertArrayEquals(new short[]{1, 2, 3}, shortWindowIter.next());
+        assertArrayEquals(new short[]{2, 3, 4}, shortWindowIter.next());
+        assertArrayEquals(new short[]{3, 4, 5}, shortWindowIter.next());
+        assertFalse(shortWindowIter.hasNext());
+
+        shortWindowIter = arr.windows(input, 3, 2);
+        assertArrayEquals(new short[]{1, 2, 3}, shortWindowIter.next());
+        assertArrayEquals(new short[]{3, 4, 5}, shortWindowIter.next());
+        assertFalse(shortWindowIter.hasNext());
+
+        shortWindowIter = arr.windows(input, 3, 3);
+        assertArrayEquals(new short[]{1, 2, 3}, shortWindowIter.next());
+        assertArrayEquals(new short[]{4, 5}, shortWindowIter.next());
+        assertFalse(shortWindowIter.hasNext());
+
+        shortWindowIter = arr.windows(input, 3, 2, true);
+        firstWindow = shortWindowIter.next();
+        assertArrayEquals(new short[]{1, 2, 3}, firstWindow);
+        secondWindow = shortWindowIter.next();
+        assertArrayEquals(new short[]{3, 4, 5}, secondWindow);
+        assertSame(firstWindow, secondWindow);
+        assertFalse(shortWindowIter.hasNext());
+
+        shortWindowIter = arr.windows(input, 2, 2, true);
+        firstWindow = shortWindowIter.next();
+        assertArrayEquals(new short[]{1, 2}, firstWindow);
+        secondWindow = shortWindowIter.next();
+        assertArrayEquals(new short[]{3, 4}, secondWindow);
+        var thirdWindow = shortWindowIter.next();
+        assertArrayEquals(new short[]{5}, thirdWindow);
+        assertSame(firstWindow, secondWindow);
+        assertNotSame(firstWindow, thirdWindow);
+    }
+
+    @Test
     void FloatArrays() {
         float[] input = {1.0f, 2.5f, 3.75f, 4.0f, 5.5f};
 
@@ -253,6 +548,140 @@ public class ArrayToolsTest {
                 arr.map(input, new double[input.length], f -> (double) f));
     }
 
+    @Test
+    void FloatArrays_Windows() {
+        float[] input = {1.1f, 2.2f, 3.3f, 4.4f, 5.5f};
+        Iterator<float[]> floatWindowIter;
+        float[] firstWindow, secondWindow;
+
+        floatWindowIter = arr.windows(input, 2);
+        assertArrayEquals(new float[]{1.1f, 2.2f}, floatWindowIter.next());
+        assertArrayEquals(new float[]{3.3f, 4.4f}, floatWindowIter.next());
+        assertArrayEquals(new float[]{5.5f}, floatWindowIter.next());
+        assertFalse(floatWindowIter.hasNext());
+
+        floatWindowIter = arr.windows(input, 3, 1);
+        assertArrayEquals(new float[]{1.1f, 2.2f, 3.3f}, floatWindowIter.next());
+        assertArrayEquals(new float[]{2.2f, 3.3f, 4.4f}, floatWindowIter.next());
+        assertArrayEquals(new float[]{3.3f, 4.4f, 5.5f}, floatWindowIter.next());
+        assertFalse(floatWindowIter.hasNext());
+
+        floatWindowIter = arr.windows(input, 3, 2);
+        assertArrayEquals(new float[]{1.1f, 2.2f, 3.3f}, floatWindowIter.next());
+        assertArrayEquals(new float[]{3.3f, 4.4f, 5.5f}, floatWindowIter.next());
+        assertFalse(floatWindowIter.hasNext());
+
+        floatWindowIter = arr.windows(input, 3, 3);
+        assertArrayEquals(new float[]{1.1f, 2.2f, 3.3f}, floatWindowIter.next());
+        assertArrayEquals(new float[]{4.4f, 5.5f}, floatWindowIter.next());
+        assertFalse(floatWindowIter.hasNext());
+
+        floatWindowIter = arr.windows(input, 3, 2, true);
+        firstWindow = floatWindowIter.next();
+        assertArrayEquals(new float[]{1.1f, 2.2f, 3.3f}, firstWindow);
+        secondWindow = floatWindowIter.next();
+        assertArrayEquals(new float[]{3.3f, 4.4f, 5.5f}, secondWindow);
+        assertSame(firstWindow, secondWindow);
+        assertFalse(floatWindowIter.hasNext());
+
+        floatWindowIter = arr.windows(input, 2, 2, true);
+        firstWindow = floatWindowIter.next();
+        assertArrayEquals(new float[]{1.1f, 2.2f}, firstWindow);
+        secondWindow = floatWindowIter.next();
+        assertArrayEquals(new float[]{3.3f, 4.4f}, secondWindow);
+        var thirdWindow = floatWindowIter.next();
+        assertArrayEquals(new float[]{5.5f}, thirdWindow);
+        assertSame(firstWindow, secondWindow);
+        assertNotSame(firstWindow, thirdWindow);
+    }
+
+    @Test
+    void LongArrays() {
+        long[] input = {1L, 2L, 3L, 4L, 5L};
+
+        assertArrayEquals(
+                new String[]{"1", "2", "3", "4", "5"},
+                arr.map(input, new String[input.length], String::valueOf));
+
+        assertArrayEquals(
+                new boolean[]{false, false, false, false, false},
+                arr.map(input, new boolean[input.length], d -> d < 0));
+
+        assertArrayEquals(
+                new byte[]{1, 2, 3, 4, 5},
+                arr.map(input, new byte[input.length], d -> (byte) d));
+
+        assertArrayEquals(
+                new char[]{'A', 'B', 'C', 'D', 'E'},
+                arr.map(input, new char[input.length], d -> (char) ('A' + (int) (d - 1))));
+
+        assertArrayEquals(
+                new short[]{1, 2, 3, 4, 5},
+                arr.map(input, new short[input.length], d -> (short) d));
+
+        assertArrayEquals(
+                new int[]{1, 2, 3, 4, 5},
+                arr.map(input, new int[input.length], d -> (int) d));
+
+        assertArrayEquals(
+                new float[]{1L, 2L, 3L, 4L, 5L},
+                arr.map(input, new float[input.length], d -> (float) d));
+
+        assertArrayEquals(
+                new double[]{0.5, 1.0, 1.5, 2.0, 2.5},
+                arr.map(input, new double[input.length], d -> (double) d / 2));
+
+        assertArrayEquals(
+                new long[]{1, 2, 3, 4, 5},
+                arr.map(input, new long[input.length], d -> d));
+    }
+
+    @Test
+    void LongArrays_Windows() {
+        long[] input = {1L, 2L, 3L, 4L, 5L};
+        Iterator<long[]> longWindowIter;
+        long[] firstWindow, secondWindow;
+
+        longWindowIter = arr.windows(input, 2);
+        assertArrayEquals(new long[]{1L, 2L}, longWindowIter.next());
+        assertArrayEquals(new long[]{3L, 4L}, longWindowIter.next());
+        assertArrayEquals(new long[]{5L}, longWindowIter.next());
+        assertFalse(longWindowIter.hasNext());
+
+        longWindowIter = arr.windows(input, 3, 1);
+        assertArrayEquals(new long[]{1L, 2L, 3L}, longWindowIter.next());
+        assertArrayEquals(new long[]{2L, 3L, 4L}, longWindowIter.next());
+        assertArrayEquals(new long[]{3L, 4L, 5L}, longWindowIter.next());
+        assertFalse(longWindowIter.hasNext());
+
+        longWindowIter = arr.windows(input, 3, 2);
+        assertArrayEquals(new long[]{1L, 2L, 3L}, longWindowIter.next());
+        assertArrayEquals(new long[]{3L, 4L, 5L}, longWindowIter.next());
+        assertFalse(longWindowIter.hasNext());
+
+        longWindowIter = arr.windows(input, 3, 3);
+        assertArrayEquals(new long[]{1L, 2L, 3L}, longWindowIter.next());
+        assertArrayEquals(new long[]{4L, 5L}, longWindowIter.next());
+        assertFalse(longWindowIter.hasNext());
+
+        longWindowIter = arr.windows(input, 3, 2, true);
+        firstWindow = longWindowIter.next();
+        assertArrayEquals(new long[]{1L, 2L, 3L}, firstWindow);
+        secondWindow = longWindowIter.next();
+        assertArrayEquals(new long[]{3L, 4L, 5L}, secondWindow);
+        assertSame(firstWindow, secondWindow);
+        assertFalse(longWindowIter.hasNext());
+
+        longWindowIter = arr.windows(input, 2, 2, true);
+        firstWindow = longWindowIter.next();
+        assertArrayEquals(new long[]{1L, 2L}, firstWindow);
+        secondWindow = longWindowIter.next();
+        assertArrayEquals(new long[]{3L, 4L}, secondWindow);
+        var thirdWindow = longWindowIter.next();
+        assertArrayEquals(new long[]{5L}, thirdWindow);
+        assertSame(firstWindow, secondWindow);
+        assertNotSame(firstWindow, thirdWindow);
+    }
 
     @Test
     void DoubleArrays() {
@@ -289,5 +718,56 @@ public class ArrayToolsTest {
         assertArrayEquals(
                 new long[]{1, 2, 3, 4, 5},
                 arr.map(input, new long[input.length], d -> (long) d));
+
+        assertArrayEquals(
+                new double[]{2.2, 4.4, 6.6, 8.8, 11},
+                arr.map(input, new double[input.length], d -> d * 2));
+    }
+
+    @Test
+    void DoubleArrays_Windows() {
+        double[] input = {1.1, 2.2, 3.3, 4.4, 5.5};
+        Iterator<double[]> doubleWindowIter;
+        double[] firstWindow, secondWindow;
+
+        doubleWindowIter = arr.windows(input, 2);
+        assertArrayEquals(new double[]{1.1, 2.2}, doubleWindowIter.next());
+        assertArrayEquals(new double[]{3.3, 4.4}, doubleWindowIter.next());
+        assertArrayEquals(new double[]{5.5}, doubleWindowIter.next());
+        assertFalse(doubleWindowIter.hasNext());
+
+        doubleWindowIter = arr.windows(input, 3, 1);
+        assertArrayEquals(new double[]{1.1, 2.2, 3.3}, doubleWindowIter.next());
+        assertArrayEquals(new double[]{2.2, 3.3, 4.4}, doubleWindowIter.next());
+        assertArrayEquals(new double[]{3.3, 4.4, 5.5}, doubleWindowIter.next());
+        assertFalse(doubleWindowIter.hasNext());
+
+        doubleWindowIter = arr.windows(input, 3, 2);
+        assertArrayEquals(new double[]{1.1, 2.2, 3.3}, doubleWindowIter.next());
+        assertArrayEquals(new double[]{3.3, 4.4, 5.5}, doubleWindowIter.next());
+        assertFalse(doubleWindowIter.hasNext());
+
+        doubleWindowIter = arr.windows(input, 3, 3);
+        assertArrayEquals(new double[]{1.1, 2.2, 3.3}, doubleWindowIter.next());
+        assertArrayEquals(new double[]{4.4, 5.5}, doubleWindowIter.next());
+        assertFalse(doubleWindowIter.hasNext());
+
+        doubleWindowIter = arr.windows(input, 3, 2, true);
+        firstWindow = doubleWindowIter.next();
+        assertArrayEquals(new double[]{1.1, 2.2, 3.3}, firstWindow);
+        secondWindow = doubleWindowIter.next();
+        assertArrayEquals(new double[]{3.3, 4.4, 5.5}, secondWindow);
+        assertSame(firstWindow, secondWindow);
+        assertFalse(doubleWindowIter.hasNext());
+
+        doubleWindowIter = arr.windows(input, 2, 2, true);
+        firstWindow = doubleWindowIter.next();
+        assertArrayEquals(new double[]{1.1, 2.2}, firstWindow);
+        secondWindow = doubleWindowIter.next();
+        assertArrayEquals(new double[]{3.3, 4.4}, secondWindow);
+        var thirdWindow = doubleWindowIter.next();
+        assertArrayEquals(new double[]{5.5}, thirdWindow);
+        assertSame(firstWindow, secondWindow);
+        assertNotSame(firstWindow, thirdWindow);
     }
 }
