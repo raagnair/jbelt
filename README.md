@@ -152,6 +152,14 @@ var input = {1, 2, 3};
 arr.map(input, input, i -> i * 2);
 ```
 
+## windows
+Functions that take in an arrow and produce an iterator of arrays that represent sliding windows of the original input. 
+
+```java
+var input = {1, 2, 3, 4, 5};
+arr.windows(input, 2); // iterator: [1, 2], [3, 4], [5]
+arr.windows(input, 2, 1); // iterator: [1, 2], [2, 3], [3, 4], [4, 5]
+```
 
 # Lambdas
 ## uncheck   
