@@ -1,5 +1,5 @@
 # Java Tool Belt (Belt)
-Things I wish were in Java's standard library.    
+Things I wish were in Java's standard library.   
 
 # Getting Started
 You can include this library into your project using jitpack.     
